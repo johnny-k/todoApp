@@ -20,6 +20,7 @@ export default class todoApp extends Component {
       super(props);
 
       this.state = {
+        // todos = [{id: 1, name: 'Homework', category: 'Study'}]
         todos: ['Todo 1', 'Todo 2', 'Todo 3'],
       }
     }
@@ -31,7 +32,7 @@ export default class todoApp extends Component {
         <Text style={styles.topTitle}>TODOS</Text>
         <ScrollableTabView>
           <TodoView tabLabel='TASK LIST' todos={this.state.todos} />
-          <AddView tabLabel='ADD TASK' />
+          <AddView tabLabel='ADD TASK' todos={this.state.todos} />
         </ScrollableTabView>
       </View>
     );

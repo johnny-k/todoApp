@@ -17,7 +17,7 @@ class TodoItem extends Component{
         <CheckBox
           label={this.props.label}
           checked={this.props.checked}
-          onChange={(checked) => this.props.removeTodo(this.props.todo)}
+          onChange={(checked) => this.props.removeTodo(this.props)}
         />
         <Text style={styles.categoryStyle}>{this.props.category}</Text>
       </View>

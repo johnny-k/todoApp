@@ -50,7 +50,7 @@ class AddView extends Component{
   }
   addTask(todo, type) {
     // Push in die Datenbank
-    console.log(todo + ' ' + type);
+    console.log(todo +' '+ type);
   }
 }
 
