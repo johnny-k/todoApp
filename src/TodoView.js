@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import TodoItem from './TodoItem';
 
-const DATABASE_KEY = '@TodoStorage:todo';
 
 class TodoView extends Component{
   constructor(props){
@@ -20,6 +19,12 @@ class TodoView extends Component{
   }
 
   render() {
+
+    //const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    //this.setState({
+      //dataSource: ds.cloneWithRows(this.props.todos),
+    //})
+
     return (
       <ListView
         style={{alignSelf: 'stretch'}}
@@ -34,20 +39,6 @@ class TodoView extends Component{
     console.log(itemName);
   }
 
-  pullDatabase = new function (){
-    AsyncStorage.getItem(DATABASE_KEY, (err, result) => {
-          console.log(result);
-          if(result !== null){
-            data = JSON.parse(result);
-
-            console.log(data);
-
-            this.state = {
-              dataSource: ds.cloneWithRows(this.props.todos),
-            };
-          }
-        });
-  }
 }
 
 const styles = StyleSheet.create({

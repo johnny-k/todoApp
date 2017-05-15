@@ -9,11 +9,14 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+    AsyncStorage
 } from 'react-native';
 import TodoView from './src/TodoView';
 import AddView from './src/AddView';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+
+const DATABASE_KEY = '@TodoStorage:todo';
 
 export default class todoApp extends Component {
   constructor(props) {
@@ -31,7 +34,7 @@ export default class todoApp extends Component {
       <View style={styles.container}>
         <Text style={styles.topTitle}>TODOS</Text>
         <ScrollableTabView
-          onChangeTab={(ev) => this._onTabChanged(ev)}>
+          onChangeTab={(ev) => this._pullDatabase(ev)}>
           <TodoView tabLabel='TASK LIST' todos={this.state.todos} />
           <AddView tabLabel='ADD TASK' todos={this.state.todos} />
         </ScrollableTabView>
@@ -39,10 +42,22 @@ export default class todoApp extends Component {
     );
   }
 
-  _onTabChanged(ev) {
+  _pullDatabase (ev){
     if(ev['i'] === 0){
-      console.log(ev['ref']);
-      ev['ref'].pullDatabase();
+      AsyncStorage.getItem(DATABASE_KEY, (err, result) => {
+          console.log(result);
+          if(result !== null){
+
+            data = JSON.parse(result);
+            console.log(data);
+            var tempTodos = this.state.todos.splice();
+            tempTodos.push(data);
+
+            this.setState({
+              todos: tempTodos
+            });
+          }
+        });
     }
   }
 }

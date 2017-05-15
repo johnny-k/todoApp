@@ -7,7 +7,10 @@ import {
   Picker,
   Button,
   View,
+  AsyncStorage
 } from 'react-native';
+
+const DATABASE_KEY = '@TodoStorage:todo';
 
 class AddView extends Component{
   constructor(props){
@@ -52,6 +55,13 @@ class AddView extends Component{
     )
   }
   addTask(todo, type) {
+
+    AsyncStorage.setItem(DATABASE_KEY, JSON.stringify(todo), (error, result) => {
+      console.log(result);
+      console.log(error);
+      console.log(JSON.stringify(error));
+    });
+
     // Push in die Datenbank
     console.log(todo +' '+ type);
   }
