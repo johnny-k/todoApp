@@ -34,15 +34,19 @@ class TodoView extends Component{
     console.log(itemName);
   }
 
-  pullDatabase (){
-    try {
-      const value = AsyncStorage.getItem(DATABASE_KEY);
-      if(value !== null) {
-        console.log('pulled from DB' + JSON.parse(value));
-      }
-    } catch(error) {
-      console.error('error '+ error);
-    }
+  pullDatabase = new function (){
+    AsyncStorage.getItem(DATABASE_KEY, (err, result) => {
+          console.log(result);
+          if(result !== null){
+            data = JSON.parse(result);
+
+            console.log(data);
+
+            this.state = {
+              dataSource: ds.cloneWithRows(this.props.todos),
+            };
+          }
+        });
   }
 }
 
