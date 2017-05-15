@@ -19,7 +19,6 @@ class TodoView extends Component{
   render() {
     return (
       <ListView
-      tabLabel = "TASK LIST"
       style={{alignSelf: 'stretch'}}
       dataSource={this.state.dataSource}
       renderRow={(rowData) => <TodoItem label={rowData} checked='false' category='Other'>{rowData}</TodoItem>}
