@@ -55,12 +55,21 @@ class AddView extends Component{
     )
   }
   addTask(todo, type) {
-
-    AsyncStorage.setItem(DATABASE_KEY, JSON.stringify(todo), (error, result) => {
-      console.log(result);
-      console.log(error);
-      console.log(JSON.stringify(error));
+    AsyncStorage.getItem(DATABASE_KEY, (err, result) => {
+      let data = [];
+      if(result !== null){
+        data = JSON.parse(result);
+        data.push(todo);
+      } else {
+        data.push(todo);
+      }
+      AsyncStorage.setItem(DATABASE_KEY, JSON.stringify(data), (error, result) => {
+        console.log(result);
+        console.log(error);
+        console.log(JSON.stringify(error));
+      });
     });
+
 
     // Push in die Datenbank
     console.log(todo +' '+ type);

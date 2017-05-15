@@ -27,6 +27,9 @@ export default class todoApp extends Component {
         todos: ['Todo 1', 'Todo 2', 'Todo 3'],
       };
       this.setTodos = this.setTodos.bind(this);
+      this.getTodos = this.getTodos.bind(this);
+      this.refreshTodos = this.refreshTodos.bind(this);
+      this.refreshTodos();
     }
 
   render() {
@@ -36,7 +39,7 @@ export default class todoApp extends Component {
         <Text style={styles.topTitle}>TODOS</Text>
         <ScrollableTabView
           onChangeTab={(ev) => this._pullDatabase(ev)}>
-          <TodoView tabLabel='TASK LIST' todos={this.state.todos} />
+          <TodoView tabLabel='TASK LIST' todos={this.state.todos} refreshTodos={this.refreshTodos}/>
           <AddView tabLabel='ADD TASK' todos={this.state.todos} />
         </ScrollableTabView>
       </View>
@@ -49,20 +52,26 @@ export default class todoApp extends Component {
     });
   }
 
+  getTodos(){
+    return this.state.todos;
+  }
+
+  refreshTodos(){
+    AsyncStorage.getItem(DATABASE_KEY, (err, result) => {
+        console.log(result);
+        if(result !== null){
+
+          data = JSON.parse(result);
+          console.log(data);
+
+          this.setTodos(data);
+        }
+      });
+  }
+
   _pullDatabase (ev){
     if(ev['i'] === 0){
-      AsyncStorage.getItem(DATABASE_KEY, (err, result) => {
-          console.log(result);
-          if(result !== null){
-
-            data = JSON.parse(result);
-            console.log(data);
-            var tempTodos = this.state.todos.splice();
-            tempTodos.push(data);
-
-            this.setTodos(tempTodos);
-          }
-        });
+      this.refreshTodos();
     }
   }
 }
