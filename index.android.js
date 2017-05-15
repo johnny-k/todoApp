@@ -17,6 +17,10 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 export default class todoApp extends Component {
   constructor(props) {
       super(props);
+
+      this.state = {
+        todos: ['Todo 1', 'Todo 2', 'Todo 3'],
+      }
     }
 
   render() {
@@ -25,7 +29,7 @@ export default class todoApp extends Component {
       <View style={styles.container}>
         <Text style={styles.topTitle}>TODOS</Text>
         <ScrollableTabView>
-          <TodoView tabLabel='TASK LIST' todos={['one', 'two', 'three']}>task list</Text>
+          <TodoView tabLabel='TASK LIST' todos={this.state.todos}>task list</Text>
           <Text tabLabel='ADD TASK'>add task</Text>
         </ScrollableTabView>
       </View>
