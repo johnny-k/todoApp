@@ -41,7 +41,7 @@ export default class todoApp extends Component {
 
   _onTabChanged(ev) {
     if(ev['i'] === 0){
-      console.log(ev->ref->pullDatabase());
+      console.log(ev['ref']);
       ev['ref'].pullDatabase();
     }
   }
