@@ -29,12 +29,18 @@ export default class todoApp extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.topTitle}>TODOS</Text>
-        <ScrollableTabView>
+        <ScrollableTabView
+          onChangeTab={(ev) => this.onTabChange(ev)}>
           <TodoView tabLabel='TASK LIST' todos={this.state.todos} />
           <AddView tabLabel='ADD TASK' />
         </ScrollableTabView>
       </View>
     );
+  }
+
+  onTabChange(ev) {
+    console.log('index is '+ ev['i']);
+    console.log('tab is ' + ev['ref']);
   }
 }
 
