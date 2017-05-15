@@ -19,7 +19,7 @@ class TodoView extends Component{
   render() {
     return (
       <ListView
-      style={{alignSelf: 'stretch'}}
+        style={{alignSelf: 'stretch'}}
         dataSource={this.state.dataSource}
         renderRow={(rowData) => <TodoItem label={rowData} checked='false' category='Other'>{rowData, this.removeTodo}</TodoItem>}
       />
@@ -33,7 +33,7 @@ class TodoView extends Component{
 }
 
 const styles = StyleSheet.create({
-
+  
 });
 
 export default TodoView;
