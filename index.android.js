@@ -25,7 +25,8 @@ export default class todoApp extends Component {
       this.state = {
         // todos = [{id: 1, name: 'Homework', category: 'Study'}]
         todos: ['Todo 1', 'Todo 2', 'Todo 3'],
-      }
+      };
+      this.setTodos = this.setTodos.bind(this);
     }
 
   render() {
@@ -42,6 +43,12 @@ export default class todoApp extends Component {
     );
   }
 
+  setTodos(todos){
+    this.setState({
+        todos: todos
+    });
+  }
+
   _pullDatabase (ev){
     if(ev['i'] === 0){
       AsyncStorage.getItem(DATABASE_KEY, (err, result) => {
@@ -53,9 +60,7 @@ export default class todoApp extends Component {
             var tempTodos = this.state.todos.splice();
             tempTodos.push(data);
 
-            this.setState({
-              todos: tempTodos
-            });
+            this.setTodos(tempTodos);
           }
         });
     }
