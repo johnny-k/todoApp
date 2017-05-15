@@ -9,29 +9,25 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View,
-  ListView
+  View
 } from 'react-native';
-import TodoItem from './src/todoItem';
+import TodoView from './src/TodoView';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 export default class todoApp extends Component {
   constructor(props) {
       super(props);
-      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-      this.state = {
-        dataSource: ds.cloneWithRows(['Eintrag 1', 'Eintrag 2', 'Eintrag 3']),
-      };
     }
 
   render() {
+    //<TodoView tabLabel ='TaskView' todos={['Eintrag 1', 'Eintrag 2', 'Eintrag 3']}/>
     return (
       <View style={styles.container}>
         <Text style={styles.topTitle}>TODOS</Text>
-        <ListView
-        style={{alignSelf: 'stretch'}}
-        dataSource={this.state.dataSource}
-        renderRow={(rowData) => <TodoItem label={rowData} checked='false' category='Other'>{rowData}</TodoItem>}
-        />
+        <ScrollableTabView>
+          <TodoView tabLabel='TASK LIST' todos={['one', 'two', 'three']}>task list</Text>
+          <Text tabLabel='ADD TASK'>add task</Text>
+        </ScrollableTabView>
       </View>
     );
   }
@@ -40,7 +36,6 @@ export default class todoApp extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   topTitle:{

@@ -10,6 +10,10 @@ import TodoItem from './TodoItem';
 class TodoView extends Component{
   constructor(props){
     super(props);
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = {
+      dataSource: ds.cloneWithRows(this.props.todos),
+    };
   }
 
   render() {
@@ -17,7 +21,7 @@ class TodoView extends Component{
       <ListView
       tabLabel = "TASK LIST"
       style={{alignSelf: 'stretch'}}
-      dataSource={this.props.todos}
+      dataSource={this.state.dataSource}
       renderRow={(rowData) => <TodoItem label={rowData} checked='false' category='Other'>{rowData}</TodoItem>}
       />
     )
