@@ -16,6 +16,7 @@ export default class todoApp extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text style={styles.topTitle}>TODOS</Text>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
@@ -34,9 +35,16 @@ export default class todoApp extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  topTitle:{
+    alignSelf: 'stretch',
+    color: 'white',
+    backgroundColor: 'black',
+    fontSize: 20,
+    fontWeight: 'bold',
+    padding: 15,
   },
   welcome: {
     fontSize: 20,
