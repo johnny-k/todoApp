@@ -21,9 +21,14 @@ class TodoView extends Component{
       <ListView
       style={{alignSelf: 'stretch'}}
         dataSource={this.state.dataSource}
-        renderRow={(rowData) => <TodoItem label={rowData} checked='false' category='Other'>{rowData}</TodoItem>}
+        renderRow={(rowData) => <TodoItem label={rowData} checked='false' category='Other'>{rowData, this.removeTodo}</TodoItem>}
       />
     )
+  }
+
+  removeTodo(itemName){
+    // Item aus der Datenbank entfernen
+    console.log(itemName);
   }
 }
 

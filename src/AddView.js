@@ -43,10 +43,14 @@ class AddView extends Component{
         </View>
 
         <View style={styles.addSection}>
-          <Button style={styles.buttonStyle} onPress={(event) => {this.props.addTask(this.state)}}  title="ADD TODO" accessibilityLabel="Adds the current task to your list" />
+          <Button style={styles.buttonStyle} onPress={(event) => {this.addTask(this.state.todo, this.state.type)}}  title="ADD TODO" accessibilityLabel="Adds the current task to your list" />
         </View>
       </View>
     )
+  }
+  addTask(todo, type) {
+    // Push in die Datenbank
+    console.log(todo + ' ' + type);
   }
 }
 
