@@ -3,9 +3,12 @@ import {
   StyleSheet,
   Text,
   View,
-  ListView
+  ListView,
+  AsyncStorage
 } from 'react-native';
 import TodoItem from './TodoItem';
+
+const DATABASE_KEY = '@TodoStorage:todo';
 
 class TodoView extends Component{
   constructor(props){
@@ -30,10 +33,21 @@ class TodoView extends Component{
     // Item aus der Datenbank entfernen
     console.log(itemName);
   }
+
+  pullDatabase (){
+    try {
+      const value = AsyncStorage.getItem(DATABASE_KEY);
+      if(value !== null) {
+        console.log('pulled from DB' + JSON.parse(value));
+      }
+    } catch(error) {
+      console.error('error '+ error);
+    }
+  }
 }
 
 const styles = StyleSheet.create({
-  
+
 });
 
 export default TodoView;
