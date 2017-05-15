@@ -29,7 +29,7 @@ export default class todoApp extends Component {
       <View style={styles.container}>
         <Text style={styles.topTitle}>TODOS</Text>
         <ScrollableTabView>
-          <TodoView tabLabel='TASK LIST' todos={this.state.todos}>task list</Text>
+          <TodoView tabLabel='TASK LIST' todos={this.state.todos}>task list</TodoView>
           <Text tabLabel='ADD TASK'>add task</Text>
         </ScrollableTabView>
       </View>

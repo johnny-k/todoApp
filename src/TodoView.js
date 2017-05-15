@@ -20,8 +20,8 @@ class TodoView extends Component{
     return (
       <ListView
       style={{alignSelf: 'stretch'}}
-      dataSource={this.state.dataSource}
-      renderRow={(rowData) => <TodoItem label={rowData} checked='false' category='Other'>{rowData}</TodoItem>}
+        dataSource={this.state.dataSource}
+        renderRow={(rowData) => <TodoItem label={rowData} checked='false' category='Other'>{rowData}</TodoItem>}
       />
     )
   }
