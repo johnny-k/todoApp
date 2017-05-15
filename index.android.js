@@ -12,6 +12,7 @@ import {
   View,
   ListView
 } from 'react-native';
+import TodoItem from './src/todoItem';
 
 export default class todoApp extends Component {
   constructor(props) {
@@ -27,8 +28,9 @@ export default class todoApp extends Component {
       <View style={styles.container}>
         <Text style={styles.topTitle}>TODOS</Text>
         <ListView
+        style={{alignSelf: 'stretch'}}
         dataSource={this.state.dataSource}
-        renderRow={(rowData) => <Text>{rowData}</Text>}
+        renderRow={(rowData) => <TodoItem label={rowData} checked='false' category='Other'>{rowData}</TodoItem>}
         />
       </View>
     );
