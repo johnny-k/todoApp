@@ -43,7 +43,10 @@ class AddView extends Component{
         </View>
 
         <View style={styles.addSection}>
-          <Button style={styles.buttonStyle} onPress={(event) => {this.addTask(this.state.todo, this.state.type)}}  title="ADD TODO" accessibilityLabel="Adds the current task to your list" />
+          <Button onPress={(event) => {this.addTask(this.state.todo, this.state.type)}}
+          title="ADD TODO"
+          accessibilityLabel="Adds the current task to your list"
+          style={{color: 'grey',}}/>
         </View>
       </View>
     )
@@ -60,18 +63,15 @@ var styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   title: {
-    fontSize: 42,
+    fontSize: 36,
     textAlign: 'center',
     margin: 10,
     color: 'black',
-  },
-  buttonStyle: {
-    fontSize: 36,
-    color: 'red',
+    textAlign: 'left',
   },
   h1: {
-    fontSize: 24,
-    textAlign: 'center',
+    fontSize: 16,
+    textAlign: 'left',
     margin: 10,
   },
 });
