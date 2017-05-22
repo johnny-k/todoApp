@@ -19,7 +19,7 @@ class AddView extends Component{
     super(props);
     this.state = {
         title: '',
-        type: 'other'
+        category: 'other'
     };
   }
 
@@ -37,7 +37,7 @@ class AddView extends Component{
 
         <View style={styles.categorySection}>
           <Text style={styles.h1}> Todo category </Text>
-          <Picker selectedValue={this.state.type} onValueChange={(type) => this.setState({type: type})}>
+          <Picker selectedValue={this.state.type} onValueChange={(value) => this.setState({category: value})}>
             <Picker.Item label="Other" value="other" />
             <Picker.Item label="Shopping" value="shopping" />
             <Picker.Item label="Study" value="study" />
@@ -47,7 +47,7 @@ class AddView extends Component{
         </View>
 
         <View style={styles.addSection}>
-          <Button onPress={(event) => {this.addTask(this.state.title, this.state.type)}}
+          <Button onPress={(event) => {this.addTask()}}
           title="ADD TODO"
           accessibilityLabel="Adds the current task to your list"
           color='lightgrey'/>
@@ -56,17 +56,18 @@ class AddView extends Component{
     )  
 }
 
-  addTask(title, type){
+  addTask(){
     let todo = {
-      'title' : title,
-      'category' : type,
-      'state' : 0
+      id: 0,
+      title: this.state.title,
+      category: this.state.category,
+      state: 0
     };
 
     ToDoManager.add_todo(todo)
       .then(data => {
+        ToastAndroid.show('added: '+ this.state.title, ToastAndroid.SHORT);
         this.setState({title: ''});
-        ToastAndroid.show('added: '+ title, ToastAndroid.SHORT);
       })
       .catch(err => {
         ToastAndroid.show('failed to add: '+ title, ToastAndroid.SHORT);
