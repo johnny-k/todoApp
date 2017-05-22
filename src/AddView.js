@@ -32,7 +32,7 @@ class AddView extends Component{
 
         <View style={styles.inputSection}>
           <Text style={styles.h1}>Todo title</Text>
-          <TextInput onChangeText={(text) => this.setState({title: text})} value={this.state.text} />
+          <TextInput onChangeText={(text) => this.setState({title: text})} value={this.state.title} />
         </View>
 
         <View style={styles.categorySection}>
@@ -65,6 +65,7 @@ class AddView extends Component{
 
     ToDoManager.add_todo(todo)
       .then(data => {
+        this.setState({title: ''});
         ToastAndroid.show('added: '+ title, ToastAndroid.SHORT);
       })
       .catch(err => {
