@@ -21,15 +21,6 @@ const DATABASE_KEY = '@TodoStorage:todo';
 export default class todoApp extends Component {
   constructor(props) {
       super(props);
-
-      this.state = {
-        // todos = [{id: 1, name: 'Homework', category: 'Study'}]
-        todos: ['Todo 1', 'Todo 2', 'Todo 3'],
-      };
-      this.setTodos = this.setTodos.bind(this);
-      this.getTodos = this.getTodos.bind(this);
-      this.refreshTodos = this.refreshTodos.bind(this);
-      this.refreshTodos();
     }
 
   render() {
@@ -38,41 +29,16 @@ export default class todoApp extends Component {
       <View style={styles.container}>
         <Text style={styles.topTitle}>TODOS</Text>
         <ScrollableTabView
-          onChangeTab={(ev) => this._pullDatabase(ev)}>
-          <TodoView tabLabel='TASK LIST' todos={this.state.todos} refreshTodos={this.refreshTodos}/>
-          <AddView tabLabel='ADD TASK' todos={this.state.todos} />
+          tabBarBackgroundColor='black'
+          tabBarActiveTextColor='white'
+          tabBarInactiveTextColor='grey'
+          tabBarUnderlineStyle={styles.tab}>  
+          <TodoView tabLabel='TASK LIST' />
+          <AddView tabLabel='ADD TASK'
+           />
         </ScrollableTabView>
       </View>
     );
-  }
-
-  setTodos(todos){
-    this.setState({
-        todos: todos
-    });
-  }
-
-  getTodos(){
-    return this.state.todos;
-  }
-
-  refreshTodos(){
-    AsyncStorage.getItem(DATABASE_KEY, (err, result) => {
-        console.log(result);
-        if(result !== null){
-
-          data = JSON.parse(result);
-          console.log(data);
-
-          this.setTodos(data);
-        }
-      });
-  }
-
-  _pullDatabase (ev){
-    if(ev['i'] === 0){
-      this.refreshTodos();
-    }
   }
 }
 
@@ -89,6 +55,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 15,
   },
+  tab:{
+    backgroundColor: 'lightblue'
+  }
 });
 
 AppRegistry.registerComponent('todoApp', () => todoApp);
