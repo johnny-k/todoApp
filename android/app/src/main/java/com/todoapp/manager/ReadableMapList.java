@@ -10,24 +10,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Generic interface for a ReadableArray containing ReadableMap elements.
+ * Basic List operations are provided.
+ *
  * Created by Johnny on 22.05.2017.
  */
 
-public class TodoArray implements ReadableArray
+public class ReadableMapList<T extends ReadableMap> implements ReadableArray
 {
-    List<Todo> list = new ArrayList<Todo>();
+    List<T> list = new ArrayList<>();
 
-    public boolean add(Todo todo)
+    public boolean add(T e)
     {
-        return list.add(todo);
+        return list.add(e);
     }
 
-    public boolean remove(Todo todo)
+    public boolean remove(T e)
     {
-        return list.remove(todo);
+        return list.remove(e);
     }
 
-    public Todo remove (int index)
+    public T remove (int index)
     {
         return list.remove(index);
     }

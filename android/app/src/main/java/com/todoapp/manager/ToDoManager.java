@@ -9,32 +9,28 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
 import com.todoapp.database.Todo;
 import com.todoapp.database.TodoContract;
 import com.todoapp.database.TodoDatabaseHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * ToDoManager
- *
+ * <p>
  * Author: Maik Hansen
- *
+ * <p>
  * This class handles the database functions of the todos.
- *
  */
 
 public class ToDoManager extends ReactContextBaseJavaModule
 {
 
     /* declare class variables */
-    private TodoDatabaseHelper helper = null ;
+    private TodoDatabaseHelper helper = null;
     private SQLiteDatabase database = null;
 
     /* constructor with init database */
-    public ToDoManager(ReactApplicationContext context){
+    public ToDoManager(ReactApplicationContext context)
+    {
         super(context);
         init_database(context);
     }
@@ -46,15 +42,17 @@ public class ToDoManager extends ReactContextBaseJavaModule
     }
 
     /* create database access */
-    private void  init_database(Context context){
-        if(helper == null){
+    private void init_database(Context context)
+    {
+        if (helper == null)
+        {
             helper = new TodoDatabaseHelper(context);
         }
     }
 
     /* add to do to database */
-    public void add_todo(Todo todo){
-
+    public void add_todo(Todo todo)
+    {
         /* open writable access to database */
         database = helper.getWritableDatabase();
 
@@ -71,10 +69,10 @@ public class ToDoManager extends ReactContextBaseJavaModule
 
     /* get all todos from database */
     @ReactMethod
-    public ReadableArray get_todos(){
-
+    public ReadableArray get_todos()
+    {
         /* new array list with todos */
-        TodoArray todos = new TodoArray();
+        ReadableMapList<Todo> todos = new ReadableMapList<>();
 
 
         /* create sql query */
@@ -87,10 +85,12 @@ public class ToDoManager extends ReactContextBaseJavaModule
         Cursor cursor = database.rawQuery(sql, null);
 
         /* move through the rows */
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst())
+        {
 
             /* while there are rows add the todo to the array list */
-            do{
+            do
+            {
 
                 Todo todo = new Todo();
                 todo.setTodoID(cursor.getInt(0));
@@ -98,7 +98,7 @@ public class ToDoManager extends ReactContextBaseJavaModule
                 todo.setTodoCategory(cursor.getString(2));
                 todo.setTodoState(cursor.getInt(3));
                 todos.add(todo);
-            } while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         /* close database connection and cursor */
@@ -111,8 +111,8 @@ public class ToDoManager extends ReactContextBaseJavaModule
 
     /* remove todo from database */
     @ReactMethod
-    public void removeTodo(int id){
-
+    public void removeTodo(int id)
+    {
         /* get writable access */
         database = helper.getWritableDatabase();
 
@@ -126,16 +126,18 @@ public class ToDoManager extends ReactContextBaseJavaModule
 
     /* get todos by given category */
     @ReactMethod
-    public ReadableArray get_todos_by_category(String category){
-
+    public ReadableArray get_todos_by_category(String category)
+    {
         /* new array list of todos */
-        TodoArray todos = new TodoArray();
+        ReadableMapList<Todo> todos = new ReadableMapList<>();
 
         /* create query - if all select all */
         String sql;
-        if(!category.equals("All")){
+        if (!category.equals("All"))
+        {
             sql = "SELECT * FROM " + TodoContract.TodoEntry.TABLE + " WHERE todo_category = \"" + category + "\"";
-        } else {
+        } else
+        {
             sql = "SELECT * FROM " + TodoContract.TodoEntry.TABLE;
         }
 
@@ -144,17 +146,19 @@ public class ToDoManager extends ReactContextBaseJavaModule
         Cursor cursor = database.rawQuery(sql, null);
 
         /* move through the rows */
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst())
+        {
 
             /* while there are rows add todo to list */
-            do{
+            do
+            {
                 Todo todo = new Todo();
                 todo.setTodoID(cursor.getInt(0));
                 todo.setTodoTitle(cursor.getString(1));
                 todo.setTodoCategory(cursor.getString(2));
                 todo.setTodoState(cursor.getInt(3));
                 todos.add(todo);
-            } while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         /* close connection and cursor */
