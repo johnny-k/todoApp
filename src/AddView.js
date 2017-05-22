@@ -7,20 +7,19 @@ import {
   Picker,
   Button,
   View,
-  AsyncStorage
+  ToastAndroid
 } from 'react-native';
+
 import ToDoManager from './ToDoManager';
 
-const DATABASE_KEY = '@TodoStorage:todo';
 
 class AddView extends Component{
 
   constructor(props){
     super(props);
     this.state = {
-      page: 'addTodo',
-      todo: '',
-      type: 'other'
+        title: '',
+        type: 'other'
     };
   }
 
@@ -33,7 +32,7 @@ class AddView extends Component{
 
         <View style={styles.inputSection}>
           <Text style={styles.h1}>Todo title</Text>
-          <TextInput onChangeText={(todo) => this.setState({todo: todo})} value={this.state.text} />
+          <TextInput onChangeText={(text) => this.setState({title: text})} value={this.state.text} />
         </View>
 
         <View style={styles.categorySection}>
@@ -48,45 +47,29 @@ class AddView extends Component{
         </View>
 
         <View style={styles.addSection}>
-          <Button onPress={(event) => {this.addTask(this.state.todo, this.state.type)}}
+          <Button onPress={(event) => {this.addTask(this.state.title, this.state.type)}}
           title="ADD TODO"
           accessibilityLabel="Adds the current task to your list"
-          style={{color: 'grey',}}/>
+          color='lightgrey'/>
         </View>
       </View>
     )  
 }
 
-/*
-  addTask(todo, type) {
-    AsyncStorage.getItem(DATABASE_KEY, (err, result) => {
-      let data = [];
-      if(result !== null){
-        data = JSON.parse(result);
-        data.push(todo);
-      } else {
-        data.push(todo);
-      }
-      AsyncStorage.setItem(DATABASE_KEY, JSON.stringify(data), (error, result) => {
-        console.log(result);
-        console.log(error);
-        console.log(JSON.stringify(error));
-      });
-    });
-
-
-    // Push in die Datenbank
-    console.log(todo +' '+ type);
-  }
-  */
-
   addTask(title, type){
-    let t = {
+    let todo = {
       'title' : title,
       'category' : type,
       'state' : 0
     };
-    ToDoManager.add_todo(t);
+
+    ToDoManager.add_todo(todo)
+      .then(data => {
+        ToastAndroid.show('added: '+ title, ToastAndroid.SHORT);
+      })
+      .catch(err => {
+        ToastAndroid.show('failed to add: '+ title, ToastAndroid.SHORT);
+      });
   }
 }
 
@@ -106,6 +89,9 @@ var styles = StyleSheet.create({
     textAlign: 'left',
     margin: 10,
   },
+  addSection:{
+    margin: 20
+  }
 });
 
 export default AddView;

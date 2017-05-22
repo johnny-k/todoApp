@@ -2,10 +2,11 @@
 /**
  * This exposes the native TodoManager module as a JS module.
  * This has the functions:
- * void add_todo(Todo todo)
- * List<Todo> get_todos()
- * void removeTodo(int id)
- * List<Todo> get_todos_by_category(String category)
+ * 
+ * add_todo(todo, promise)
+ * get_todos(promise)
+ * remove_todo(id, promise)
+ * get_todos_by_category(category, promise)
  */
 import { NativeModules } from 'react-native';
 module.exports = NativeModules.ToDoManager;

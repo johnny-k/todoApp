@@ -6,9 +6,6 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableType;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Todo
  * <p>
@@ -19,7 +16,6 @@ import java.util.List;
 
 public class Todo implements ReadableMap
 {
-
     public static final String KEY_ID = "id";
     public static final String KEY_TITLE = "title";
     public static final String KEY_CATEGORY = "category";
@@ -47,6 +43,14 @@ public class Todo implements ReadableMap
         this.todo_title = todo_title;
         this.todo_category = todo_category;
         this.todo_state = todo_state;
+    }
+
+    public Todo(ReadableMap rm)
+    {
+        todo_id = rm.isNull(KEY_ID) ? 0 : rm.getInt(KEY_ID);
+        todo_title = rm.isNull(KEY_TITLE) ? null : rm.getString(KEY_TITLE);
+        todo_category = rm.isNull(KEY_CATEGORY) ? null : rm.getString(KEY_CATEGORY);
+        todo_state = rm.isNull(KEY_STATE) ? 0 : rm.getInt(KEY_STATE);
     }
 
     /* returns todo id*/
@@ -141,9 +145,9 @@ public class Todo implements ReadableMap
         switch (name)
         {
             case KEY_ID:
-                return (double)todo_id;
+                return (double) todo_id;
             case KEY_STATE:
-                return (double)todo_state;
+                return (double) todo_state;
 
             case KEY_TITLE:
             case KEY_CATEGORY:

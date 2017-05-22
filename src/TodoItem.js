@@ -3,25 +3,48 @@ import {
   StyleSheet,
   Text,
   View,
+  ToastAndroid
 } from 'react-native';
 import CheckBox from 'react-native-checkbox';
+
+import ToDoManager from './ToDoManager';
 
 class TodoItem extends Component{
   constructor(props){
     super(props);
+
+    this.state = {
+      id : this.props.task['id'],
+      title: this.props.task['title'],
+      category: this.props.task['category'],
+      checked: this.props.task['state'] ? false : true
+    };
   }
 
   render() {
     return (
       <View style={styles.listItem}>
         <CheckBox
-          label={this.props.label}
-          checked={this.props.checked}
-          onChange={(checked) => this.props.removeTodo(this.props.label)}
+          label={this.state.title}
+          checked={this.state.checked}
+          onChange={() => this.props.removeTask()}
         />
-        <Text style={styles.categoryStyle}>{this.props.category}</Text>
+        <Text style={styles.categoryStyle}>{this.state.category}</Text>
       </View>
     )
+  }
+
+  removeTask(){
+    ToDoManager.remove_todo(this.state.id)
+      .then(data => {
+        this.setState({checked: true});
+        setTimeout(() => {
+          ToastAndroid.show("Todo finished", ToastAndroid.SHORT);
+        }, 500);
+      })
+      .catch(err => {
+
+      });
   }
 }
 
