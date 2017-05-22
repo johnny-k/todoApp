@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.todoapp.database.Todo;
 import com.todoapp.database.TodoContract;
 import com.todoapp.database.TodoDatabaseHelper;
@@ -69,10 +71,11 @@ public class ToDoManager extends ReactContextBaseJavaModule
 
     /* get all todos from database */
     @ReactMethod
-    public List<Todo> get_todos(){
+    public ReadableArray get_todos(){
 
         /* new array list with todos */
-        List<Todo> todos = new ArrayList<>();
+        TodoArray todos = new TodoArray();
+
 
         /* create sql query */
         String sql = "SELECT * FROM " + TodoContract.TodoEntry.TABLE;
@@ -88,6 +91,7 @@ public class ToDoManager extends ReactContextBaseJavaModule
 
             /* while there are rows add the todo to the array list */
             do{
+
                 Todo todo = new Todo();
                 todo.setTodoID(cursor.getInt(0));
                 todo.setTodoTitle(cursor.getString(1));
@@ -122,10 +126,10 @@ public class ToDoManager extends ReactContextBaseJavaModule
 
     /* get todos by given category */
     @ReactMethod
-    public List<Todo> get_todos_by_category(String category){
+    public ReadableArray get_todos_by_category(String category){
 
         /* new array list of todos */
-        List<Todo> todos = new ArrayList<>();
+        TodoArray todos = new TodoArray();
 
         /* create query - if all select all */
         String sql;
