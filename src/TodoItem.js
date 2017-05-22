@@ -17,7 +17,7 @@ class TodoItem extends Component{
       id : this.props.task['id'],
       title: this.props.task['title'],
       category: this.props.task['category'],
-      checked: this.props.task['state'] ? false : true
+      checked: this.props.task['state'] == 0 ? false : true
     };
   }
 
@@ -27,7 +27,7 @@ class TodoItem extends Component{
         <CheckBox
           label={this.state.title}
           checked={this.state.checked}
-          onChange={() => this.props.removeTask()}
+          onChange={() => this.removeTask()}
         />
         <Text style={styles.categoryStyle}>{this.state.category}</Text>
       </View>
