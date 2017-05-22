@@ -22,7 +22,7 @@ public class Todo implements ReadableMap
 
     public static final String KEY_ID = "id";
     public static final String KEY_TITLE = "title";
-    public static final String KEY_CATEGORY = " category";
+    public static final String KEY_CATEGORY = "category";
     public static final String KEY_STATE = "state";
 
     /* declare class variables */

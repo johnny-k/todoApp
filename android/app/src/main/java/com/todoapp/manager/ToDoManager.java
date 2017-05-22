@@ -4,11 +4,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.modules.toast.ToastModule;
 import com.todoapp.database.Todo;
 import com.todoapp.database.TodoContract;
 import com.todoapp.database.TodoDatabaseHelper;
@@ -28,11 +32,15 @@ public class ToDoManager extends ReactContextBaseJavaModule
     private TodoDatabaseHelper helper = null;
     private SQLiteDatabase database = null;
 
+    private ReactContext context;
+
     /* constructor with init database */
     public ToDoManager(ReactApplicationContext context)
     {
         super(context);
         init_database(context);
+
+        this.context = context;
     }
 
     @Override
@@ -51,20 +59,23 @@ public class ToDoManager extends ReactContextBaseJavaModule
     }
 
     /* add to do to database */
-    public void add_todo(Todo todo)
+    @ReactMethod
+    public void add_todo(ReadableMap todo)
     {
         /* open writable access to database */
         database = helper.getWritableDatabase();
 
         /* set the values - column, value */
         ContentValues values = new ContentValues();
-        values.put(TodoContract.TodoEntry.COL_TODO_TITLE, todo.getTodoTitle());
-        values.put(TodoContract.TodoEntry.COL_TODO_CATEGORY, todo.getTodoCategory());
-        values.put(TodoContract.TodoEntry.COL_TODO_STATE, todo.getTodoState());
+        values.put(TodoContract.TodoEntry.COL_TODO_TITLE, todo.getString(Todo.KEY_TITLE));
+        values.put(TodoContract.TodoEntry.COL_TODO_CATEGORY, todo.getString(Todo.KEY_CATEGORY));
+        values.put(TodoContract.TodoEntry.COL_TODO_STATE, todo.getInt(Todo.KEY_STATE));
 
         /* insert to db and close connection */
         database.insert(TodoContract.TodoEntry.TABLE, null, values);
         database.close();
+
+        Toast.makeText(context, "added: " + todo.getString(Todo.KEY_TITLE), Toast.LENGTH_LONG).show();
     }
 
     /* get all todos from database */

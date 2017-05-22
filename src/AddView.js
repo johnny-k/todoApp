@@ -9,10 +9,12 @@ import {
   View,
   AsyncStorage
 } from 'react-native';
+import ToDoManager from './ToDoManager';
 
 const DATABASE_KEY = '@TodoStorage:todo';
 
 class AddView extends Component{
+
   constructor(props){
     super(props);
     this.state = {
@@ -52,8 +54,10 @@ class AddView extends Component{
           style={{color: 'grey',}}/>
         </View>
       </View>
-    )
-  }
+    )  
+}
+
+/*
   addTask(todo, type) {
     AsyncStorage.getItem(DATABASE_KEY, (err, result) => {
       let data = [];
@@ -74,6 +78,16 @@ class AddView extends Component{
     // Push in die Datenbank
     console.log(todo +' '+ type);
   }
+  */
+
+  addTask(title, type){
+    let t = {
+      'title' : title,
+      'category' : type,
+      'state' : 0
+    };
+    ToDoManager.add_todo(t);
+  }
 }
 
 var styles = StyleSheet.create({
@@ -83,10 +97,9 @@ var styles = StyleSheet.create({
   },
   title: {
     fontSize: 36,
-    textAlign: 'center',
+    textAlign: 'left',
     margin: 10,
     color: 'black',
-    textAlign: 'left',
   },
   h1: {
     fontSize: 16,
