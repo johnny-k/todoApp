@@ -7,10 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.todoapp.database.Todo;
 import com.todoapp.database.TodoContract;
 import com.todoapp.database.TodoDatabaseHelper;
@@ -30,15 +33,11 @@ public class ToDoManager extends ReactContextBaseJavaModule
     private TodoDatabaseHelper helper = null;
     private SQLiteDatabase database = null;
 
-    private ReactContext context;
-
     /* constructor with init database */
     public ToDoManager(ReactApplicationContext context)
     {
         super(context);
         init_database(context);
-
-        this.context = context;
     }
 
     @Override
@@ -62,7 +61,10 @@ public class ToDoManager extends ReactContextBaseJavaModule
     {
         try
         {
-            Todo todo = new Todo(rm);
+            Todo todo = new Todo();
+            todo.setTodoTitle(rm.hasKey(Todo.KEY_TITLE) ? rm.getString(Todo.KEY_TITLE) : null);
+            todo.setTodoCategory(rm.hasKey(Todo.KEY_CATEGORY) ? rm.getString(Todo.KEY_CATEGORY) : null);
+            todo.setTodoState(rm.hasKey(Todo.KEY_STATE) ? rm.getInt(Todo.KEY_STATE) : 0);
 
             /* open writable access to database */
             database = helper.getWritableDatabase();
@@ -76,10 +78,11 @@ public class ToDoManager extends ReactContextBaseJavaModule
             /* insert to db and close connection */
             database.insert(TodoContract.TodoEntry.TABLE, null, values);
             database.close();
+
             promise.resolve(null);
         } catch (Exception ex)
         {
-            promise.resolve(ex.getMessage());
+            promise.reject(ex.getCause());
         }
     }
 
@@ -90,7 +93,7 @@ public class ToDoManager extends ReactContextBaseJavaModule
         try
         {
             /* new array list with todos */
-            ReadableMapList<Todo> todos = new ReadableMapList<>();
+            WritableArray todos = new WritableNativeArray();
 
             /* create sql query */
             String sql = "SELECT * FROM " + TodoContract.TodoEntry.TABLE;
@@ -107,12 +110,12 @@ public class ToDoManager extends ReactContextBaseJavaModule
                 /* while there are rows add the todo to the array list */
                 do
                 {
-                    Todo todo = new Todo();
-                    todo.setTodoID(cursor.getInt(0));
-                    todo.setTodoTitle(cursor.getString(1));
-                    todo.setTodoCategory(cursor.getString(2));
-                    todo.setTodoState(cursor.getInt(3));
-                    todos.add(todo);
+                    WritableMap todo = new WritableNativeMap();
+                    todo.putInt(Todo.KEY_ID, cursor.getInt(0));
+                    todo.putString(Todo.KEY_TITLE, cursor.getString(1));
+                    todo.putString(Todo.KEY_CATEGORY, cursor.getString(2));
+                    todo.putInt(Todo.KEY_STATE, cursor.getInt(3));
+                    todos.pushMap(todo);
                 } while (cursor.moveToNext());
             }
 
@@ -124,7 +127,7 @@ public class ToDoManager extends ReactContextBaseJavaModule
             promise.resolve(todos);
         } catch (Exception ex)
         {
-            promise.reject(ex.getMessage(), ex.getCause());
+            promise.reject(ex.getCause());
         }
     }
 
@@ -147,7 +150,7 @@ public class ToDoManager extends ReactContextBaseJavaModule
             promise.resolve(null);
         } catch (Exception ex)
         {
-            promise.reject(ex.getMessage(), ex.getCause());
+            promise.reject(ex.getCause());
         }
     }
 
@@ -158,7 +161,7 @@ public class ToDoManager extends ReactContextBaseJavaModule
         try
         {
             /* new array list of todos */
-            ReadableMapList<Todo> todos = new ReadableMapList<>();
+            WritableArray todos = new WritableNativeArray();
 
             /* create query - if all select all */
             String sql;
@@ -177,16 +180,15 @@ public class ToDoManager extends ReactContextBaseJavaModule
             /* move through the rows */
             if (cursor.moveToFirst())
             {
-
                 /* while there are rows add todo to list */
                 do
                 {
-                    Todo todo = new Todo();
-                    todo.setTodoID(cursor.getInt(0));
-                    todo.setTodoTitle(cursor.getString(1));
-                    todo.setTodoCategory(cursor.getString(2));
-                    todo.setTodoState(cursor.getInt(3));
-                    todos.add(todo);
+                    WritableMap todo = new WritableNativeMap();
+                    todo.putInt(Todo.KEY_ID, cursor.getInt(0));
+                    todo.putString(Todo.KEY_TITLE, cursor.getString(1));
+                    todo.putString(Todo.KEY_CATEGORY, cursor.getString(2));
+                    todo.putInt(Todo.KEY_STATE, cursor.getInt(3));
+                    todos.pushMap(todo);
                 } while (cursor.moveToNext());
             }
 
@@ -198,7 +200,7 @@ public class ToDoManager extends ReactContextBaseJavaModule
             promise.resolve(todos);
         } catch (Exception ex)
         {
-            promise.reject(ex.getMessage(), ex.getCause());
+            promise.reject(ex.getCause());
         }
     }
 }

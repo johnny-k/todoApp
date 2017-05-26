@@ -47,14 +47,6 @@ public class Todo
         this.todo_state = todo_state;
     }
 
-    public Todo(ReadableMap rm)
-    {
-        todo_id = rm.hasKey(KEY_ID) ? 0 : rm.getInt(KEY_ID);
-        todo_title = rm.hasKey(KEY_TITLE) ? null : rm.getString(KEY_TITLE);
-        todo_category = rm.hasKey(KEY_CATEGORY) ? null : rm.getString(KEY_CATEGORY);
-        todo_state = rm.hasKey(KEY_STATE) ? 0 : rm.getInt(KEY_STATE);
-    }
-
     /* returns todo id*/
     public int getTodoID()
     {
