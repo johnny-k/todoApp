@@ -4,7 +4,7 @@ import {
   Text,
   View,
   ListView,
-  AsyncStorage
+  ToastAndroid
 } from 'react-native';
 
 import TodoItem from './TodoItem';
@@ -14,10 +14,11 @@ import ToDoManager from './ToDoManager';
 class TodoView extends Component{
   constructor(props){
     super(props);
+
     this.state = {
       todos: []
     };
-    //this.removeTodo = this.removeTodo.bind(this);
+    this.loadTodos();
   }
 
   render() {
@@ -26,12 +27,40 @@ class TodoView extends Component{
     dataSource = ds.cloneWithRows(this.state.todos);
 
     return (
-      <ListView
+      <ListView enableEmptySections={true}
         style={{alignSelf: 'stretch'}}
         dataSource={dataSource}
-        renderRow={(rowData) => <TodoItem task={rowData}></TodoItem>}
+        renderRow={(rowData) => <TodoItem task={rowData}
+        onClick={this.removeTask}></TodoItem>}
       />
     )
+  }
+
+  loadTodos(){
+    ToDoManager.get_todos()
+      .then(data =>{
+        if(! data){
+          data = [];
+        }
+        this.setState({todos : data});
+      })
+      .catch(err =>{
+        console.error('failed to load todos');
+    });
+  }
+
+  removeTask(id){
+    console.log('remove task with ID '+ id);
+
+    ToDoManager.remove_todo(id)
+      .then(data => {
+        setTimeout(() => {
+          ToastAndroid.show("Todo finished", ToastAndroid.SHORT);
+        }, 500);
+      })
+      .catch(err => {
+
+      });
   }
 
 }

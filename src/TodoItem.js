@@ -7,8 +7,6 @@ import {
 } from 'react-native';
 import CheckBox from 'react-native-checkbox';
 
-import ToDoManager from './ToDoManager';
-
 class TodoItem extends Component{
   constructor(props){
     super(props);
@@ -27,24 +25,16 @@ class TodoItem extends Component{
         <CheckBox
           label={this.state.title}
           checked={this.state.checked}
-          onChange={() => this.removeTask()}
+          onChange={() => {this.onItemChanged()}}
         />
         <Text style={styles.categoryStyle}>{this.state.category}</Text>
       </View>
     )
   }
 
-  removeTask(){
-    ToDoManager.remove_todo(this.state.id)
-      .then(data => {
-        this.setState({checked: true});
-        setTimeout(() => {
-          ToastAndroid.show("Todo finished", ToastAndroid.SHORT);
-        }, 500);
-      })
-      .catch(err => {
-
-      });
+  onItemChanged(){
+    this.setState({checked: true});
+    this.props.onClick(this.state.id)
   }
 }
 
