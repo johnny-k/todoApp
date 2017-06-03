@@ -19,44 +19,45 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 const DATABASE_KEY = '@TodoStorage:todo';
 
 export default class todoApp extends Component {
+
   constructor(props) {
       super(props);
     }
 
   render() {
-    //<TodoView tabLabel ='TaskView' todos={['Eintrag 1', 'Eintrag 2', 'Eintrag 3']}/>
     return (
       <View style={styles.container}>
         <Text style={styles.topTitle}>TODOS</Text>
         <ScrollableTabView
-          tabBarBackgroundColor='black'
+          tabBarBackgroundColor='#212121'
           tabBarActiveTextColor='white'
           tabBarInactiveTextColor='grey'
           tabBarUnderlineStyle={styles.tab}>  
           <TodoView tabLabel='TASK LIST' />
-          <AddView tabLabel='ADD TASK'
-           />
+          <AddView tabLabel='ADD TASK' />
         </ScrollableTabView>
       </View>
     );
   }
+
+
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#f5fcff',
   },
   topTitle:{
     alignSelf: 'stretch',
     color: 'white',
-    backgroundColor: 'black',
+    backgroundColor: '#212121',
     fontSize: 20,
     fontWeight: 'bold',
     padding: 15,
   },
   tab:{
-    backgroundColor: 'lightblue'
+    backgroundColor: '#00bcd4'
   }
 });
 
