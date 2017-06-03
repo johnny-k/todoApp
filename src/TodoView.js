@@ -11,12 +11,14 @@ import TodoItem from './TodoItem';
 
 import ToDoManager from './ToDoManager';
 
+const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => {
+  return r1 !== r2
+}});
+
 class TodoView extends Component{
 
   constructor(props){
     super(props);
-    
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
     this.state = {
       dataSource : ds.cloneWithRows([]),
@@ -57,7 +59,7 @@ class TodoView extends Component{
         }
 
         this.setState({
-          dataSource : this.state.dataSource.cloneWithRows(newData),
+          dataSource : ds.cloneWithRows(newData),
           db :newData,
         });
       })
@@ -66,25 +68,20 @@ class TodoView extends Component{
     });
   }
 
-  removeTask(id){
-    console.log('remove task with ID '+ id);
+  removeTask(taskId){
+    console.log('remove task with ID '+ taskId);
 
-    ToDoManager.remove_todo(id)
+    ToDoManager.remove_todo(taskId)
       .then(newData => {
-        setTimeout(() => {
-          var data = [];
-          data = this.state.db.slice();
+        var newDb = this.state.db.slice();
+        var index = newDb.indexOf(newDb.find((item) => item.id === taskId));
+        newDb.splice(index, 1);
 
-          var index = data.indexOf(data.find((item) => item.id === id));
-          data.splice(index, 1);
+        this.setState({
+          dataSource : this.state.dataSource.cloneWithRows(newDb),
+        });
 
-          this.setState({
-            dataSource : this.state.dataSource.cloneWithRows(data),
-            db : data,
-          });
-
-          ToastAndroid.show("Todo finished", ToastAndroid.SHORT);
-        }, 300);
+        ToastAndroid.show("Todo finished", ToastAndroid.SHORT);
       })
       .catch(err => {
         console.error(err);
