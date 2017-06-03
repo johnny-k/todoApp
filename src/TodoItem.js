@@ -23,18 +23,17 @@ class TodoItem extends Component{
     return (
       <View style={styles.listItem}>
         <CheckBox
-          label={this.state.title}
+          label={this.props.task.title}
           checked={this.state.checked}
           onChange={() => {this.onItemChanged()}}
         />
-        <Text style={styles.categoryStyle}>{this.state.category}</Text>
+        <Text style={styles.categoryStyle}>{this.props.task.category}</Text>
       </View>
     )
   }
 
   onItemChanged(){
-    this.setState({checked: true});
-    this.props.onClick(this.state.id)
+    this.props.onClick(this.props.task.id)
   }
 }
 
